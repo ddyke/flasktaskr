@@ -8,6 +8,7 @@
     <div class="page">
 
       {% for message in get_flashed_messages() %}
+        <!-- display 'flashed' message in the application -->
         <div class="flash">{{ message }}</div>
       {% endfor %}
 
@@ -16,7 +17,7 @@
       {% endif %}
 
       <br>
-
+      <!-- take child template here -->
       {% block content %}
       {% endblock %}
     </div>
