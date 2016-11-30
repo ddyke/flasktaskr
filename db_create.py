@@ -34,8 +34,8 @@ db.create_all()
 
 # insert data
 # Task defines the format of the table 'tasks'
-db.session.add(Task('Finish this tutorial', date(2016, 11, 30), 10, 1))
-db.session.add(Task('Finish Real Python', date(2016, 12, 1), 10, 1))
+# db.session.add(Task('Finish this tutorial', date(2016, 11, 30), 10, 1))
+# db.session.add(Task('Finish Real Python', date(2016, 12, 1), 10, 1))
 
 # commit the changes
 db.session.commit()

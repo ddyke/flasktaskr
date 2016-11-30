@@ -28,11 +28,10 @@ change status
 
 
 from functools import wraps
-
+from forms import AddTaskForm, RegisterForm, LoginForm
 from flask import Flask, flash, redirect, render_template, request, session, url_for, g
 from flask.ext.sqlalchemy import SQLAlchemy
-from forms import AddTaskForm
-
+from datetime import datetime
 
 # config
 
@@ -42,11 +41,14 @@ app.config.from_object('_config')   # dictionary
 # in the html templates.
 
 # for printing app.config
-#for key, values in app.config.items():
-#    print(key, values)
+# for key, values in app.config.items():
+#     print(key, values)
 db = SQLAlchemy(app)
-from models import Task # Import Task class from models.py, need this line placed after db=SQLAlchemy to avoid
+
+# Import Task, User class from models.py, need this line placed after db=SQLAlchemy to avoid
 # circular referencing
+from models import Task, User
+
 # helper functions
 
 """
@@ -55,6 +57,30 @@ from models import Task # Import Task class from models.py, need this line place
 def connect_db():
     return sqlite3.connect(app.config['DATABASE_PATH'])
 """
+# registration handler
+@app.route('/register/', methods=['GET', 'POST'])
+def register():
+    error = None
+    # form is an inheritance of RegisterForm class that is a child of flask_wrf.Form module
+    # flask_wrf > RegisterForm > form > validate_on_submit (check CSRF token, {{ form.csrf_token }} )
+    form = RegisterForm(request.form)
+    if request.method == 'POST':
+        # validate the input
+        if form.validate_on_submit():
+            #add new user data to the "user" table
+            new_user = User(
+                form.name.data,
+                form.email.data,
+                form.password.data,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            # redirect to the login page
+            flash('Thanks for registering. Please login.')
+            return redirect(url_for('login'))
+    return render_template('register.html', form=form, error=error)
+
+
 # check if logged in
 def login_required(test):
     @wraps(test)
@@ -71,11 +97,14 @@ def login_required(test):
 @app.route('/logout/')
 def logout():
     session.pop('logged_in', None)
+    session.pop('user_id', None )
     flash("Goodbye!")
     return redirect(url_for('login'))
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    """
+    # code for the sqlite3 version
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME'] or \
             request.form['password'] != app.config['PASSWORD']:
@@ -86,6 +115,24 @@ def login():
             flash("Welcome!")
             return redirect(url_for('tasks'))
     return render_template('/login.html')
+    """
+
+    error = None
+    form = LoginForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = User.query.filter_by(name=request.form['name']).first()
+            if user is not None and user.password == request.form['password']:
+                session['logged_in'] = True
+                session['user_id'] = user.id
+                flash('Welcome!')
+                return redirect(url_for('tasks'))
+            else:
+                error = 'Invalid username or password'
+        else:
+            error = 'Both fields are required.'
+    return render_template('login.html', form=form, error=error)
+
 
 #　operate database
 @app.route('/tasks/')
@@ -161,12 +208,18 @@ def new_task():
                 form.name.data,
                 form.due_date.data,
                 form.priority.data,
-                '1'
+                datetime.utcnow(),
+                '1',
+                session['user_id']
             )
             db.session.add(new_task)
             db.session.commit()
             flash('New entry was successfully posted. Thanks.')
-    return redirect(url_for('tasks'))
+            return redirect(url_for('tasks'))
+        else:
+            flash('All fields are required.')
+            return redirect(url_for('tasks'))
+    return render_template('tasks.html', form=form)
 
 # mark as complete
 @app.route('/complete/<int:task_id>/')  # define the path, to be assigned in the 'Mark as Complete' link in task.html
