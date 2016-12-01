@@ -7,10 +7,33 @@
     <form action="{{ url_for('new_task') }}" method="post">
       {{ form.csrf_token }}
       <p>
-        {{ form.name.label }}: {{ form.name }}<br>
-        {{ form.due_date.label }}: {{ form.due_date }}<br>
-        {{ form.priority.label }}: {{ form.priority }}
+        {{ form.name.label }}: {{ form.name(placeholder="name") }}
+        <span class="error">
+          {% if form.name.errors %}
+            {% for error in form.name.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+        </span>
       </p>
+      <p>
+        {{ form.due_date.label }}: {{ form.due_date(placeholder="due date") }}
+        <span class="error">
+          {% if form.due_date.errors %}
+            {% for error in form.due_date.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+        </span>
+      </p>
+        {{ form.priority.label }}: {{ form.priority }}
+        <span class="error">
+          {% if form.priority.errors %}
+            {% for error in form.priority.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+        </span>
       <p><input type="submit" value="Submit"></p>
    </form>
 </div>
@@ -52,9 +75,9 @@
   <h2>Closed tasks:</h2>
   <div class="datagrid">
     <table>
-    <thead>
-      <tr>
-        <th width="200px"><strong>Task Name</strong></th>
+      <thead>
+        <tr>
+          <th width="200px"><strong>Task Name</strong></th>
           <th width="75px"><strong>Due Date</strong></th>
           <th width="100px"><strong>Posted Date</strong></th>
           <th width="50px"><strong>Priority</strong></th>

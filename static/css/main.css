@@ -64,8 +64,10 @@ h2 {
 }
 
 .error {
-  background: #F0D6D6;
+  color: red;
+  background: #FFFFFF;
   padding: 0.5em;
+  font-size: 0.8em;
 }
 
 .datagrid table {
@@ -124,3 +126,4 @@ h2 {
   margin: 0;
   text-decoration:none;
   position:relative;
+}

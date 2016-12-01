@@ -31,6 +31,7 @@ from functools import wraps
 from forms import AddTaskForm, RegisterForm, LoginForm
 from flask import Flask, flash, redirect, render_template, request, session, url_for, g
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 
 # config
@@ -38,7 +39,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.config.from_object('_config')   # dictionary
 # the dictionary includes "WTF_CSRF_ENABLED = True" and thus CSRF token is enabled. this needs to be reflected
-# in the html templates.
+# in the html templates by writing {{ form.csrf_token }}
 
 # for printing app.config
 # for key, values in app.config.items():
@@ -64,6 +65,7 @@ def register():
     # form is an inheritance of RegisterForm class that is a child of flask_wrf.Form module
     # flask_wrf > RegisterForm > form > validate_on_submit (check CSRF token, {{ form.csrf_token }} )
     form = RegisterForm(request.form)
+
     if request.method == 'POST':
         # validate the input
         if form.validate_on_submit():
@@ -73,12 +75,22 @@ def register():
                 form.email.data,
                 form.password.data,
             )
-            db.session.add(new_user)
-            db.session.commit()
-            # redirect to the login page
-            flash('Thanks for registering. Please login.')
-            return redirect(url_for('login'))
-    return render_template('register.html', form=form, error=error)
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                # redirect to the login page
+                flash('Thanks for registering. Please login.')
+                return redirect(url_for('login'))
+            except IntegrityError:
+                error = "That username and/or email already exist."
+                return render_template('register.html',
+                                       form=form,
+                                       error=error
+                                       )
+    return render_template('register.html',
+                           form=form,
+                           error=error
+                           )
 
 
 # check if logged in
@@ -131,7 +143,10 @@ def login():
                 error = 'Invalid username or password'
         else:
             error = 'Both fields are required.'
-    return render_template('login.html', form=form, error=error)
+    return render_template('login.html',
+                           form=form,
+                           error=error
+                           )
 
 
 #　operate database
@@ -163,12 +178,11 @@ def tasks():
                            closed_tasks=closed_tasks
                            )
     """
-    open_tasks = db.session.query(Task).filter_by(status='1').order_by(Task.due_date.asc())
-    closed_tasks = db.session.query(Task).filter_by(status='0').order_by(Task.due_date.asc())
+    print(db.session.query(User).all())
     return render_template('task.html',
                            form=AddTaskForm(request.form),
-                           open_tasks=open_tasks,
-                           closed_tasks=closed_tasks
+                           open_tasks=open_tasks(),
+                           closed_tasks=closed_tasks()
                            )
 
 # Add new tasks
@@ -201,6 +215,7 @@ def new_task():
         flash("New entry was successfully posted. Thanks.")
         return redirect(url_for('tasks'))
     """
+    error = None
     form = AddTaskForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -216,10 +231,21 @@ def new_task():
             db.session.commit()
             flash('New entry was successfully posted. Thanks.')
             return redirect(url_for('tasks'))
-        else:
-            flash('All fields are required.')
-            return redirect(url_for('tasks'))
-    return render_template('tasks.html', form=form)
+    # return form values if request.method is NOT 'POST' or form.validate_on_submit() is False
+    return render_template('task.html',
+                           form=form,
+                           error=error,
+                           open_tasks=open_tasks(),
+                           closed_tasks=closed_tasks()
+                           )
+
+# helper function to return open tasks
+def open_tasks():
+    return db.session.query(Task).filter_by(status='1').order_by(Task.due_date.asc())
+
+# helper function to return closed tasks
+def closed_tasks():
+    return db.session.query(Task).filter_by(status='0').order_by(Task.due_date.asc())
 
 # mark as complete
 @app.route('/complete/<int:task_id>/')  # define the path, to be assigned in the 'Mark as Complete' link in task.html
@@ -260,3 +286,9 @@ def delete_entry(task_id):
     db.session.commit()
     flash('The task was deleted.')
     return redirect(url_for('tasks'))
+
+# not sure where this function is used
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        flash(u"Error in the {} field - {}"
+              .format(getattr(form, field).label.text, error), 'error')
