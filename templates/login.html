@@ -2,9 +2,9 @@
 {% block content %}
 
 <h1>Welcome to FlaskTaskr.</h1>
-<h3>Please login to access our task list.</h3>
+<h3>Please login to access your task list.</h3>
 
-<form method="post" action="/">
+<form method="post" action="`/">
   {{ form.csrf_token }}
     <p>
       {{ form.name.label }}
