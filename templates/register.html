@@ -6,7 +6,6 @@
 <form method="POST" action="/register/">
   {{ form.csrf_token }}
   <p>
-    {{ form.name.label }}<br>
     {{ form.name(placeholder="name") }}
     {% if form.name.errors %}
       <span class="error">
@@ -17,7 +16,6 @@
     {% endif %}
   </p>
   <p>
-    {{ form.email.label }}<br>
     {{ form.email(placeholder="email address") }}
     {% if form.email.errors %}
       <span class="error">
@@ -28,7 +26,6 @@
     {% endif %}
   </p>
   <p>
-    {{ form.password.label }}<br>
     {{ form.password(placeholder="password") }}
     {% if form.password.errors %}
       <span class="error">
@@ -39,7 +36,6 @@
     {% endif %}
   </p>
   <p>
-    {{ form.confirm.label }}<br>
     {{ form.confirm(placeholder="confirm password") }}
     {% if form.confirm.errors %}
       <span class="error">

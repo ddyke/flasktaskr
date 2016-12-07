@@ -4,11 +4,9 @@
 <h1>Welcome to FlaskTaskr.</h1>
 <h3>Please login to access your task list.</h3>
 
-<form method="post" action="`/">
+<form class="form-signin" role="form" method="post" action="/">
   {{ form.csrf_token }}
     <p>
-      {{ form.name.label }}
-      &nbsp;&nbsp;
       {{ form.name(placeholder="name") }}
       <span class="error">
         {% if form.name.errors %}
@@ -19,8 +17,6 @@
       </span>
     </p>
     <p>
-      {{ form.password.label }}
-      &nbsp;&nbsp;
       {{ form.password(placeholder="password") }}
       <span class="error">
         {% if form.password.errors %}
@@ -31,6 +27,7 @@
       </span>
     </p>
     <button class="btn btn-sm btn-success" type="submit">Sign in</button>
+    <br>
     <br>
     <p><em>Need an account? </em><a href="/register">Signup!!</a></p>
 </form>

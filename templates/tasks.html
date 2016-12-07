@@ -1,13 +1,14 @@
 {% extends "_base.html" %}
 {% block content %}
 <h1> Welcome to FlaskTaskr</h1>
+<br>
 <a href="/logout">Logout</a>
 <div class="add-task">
   <h3>Add a new task:</h3>
     <form action="{{ url_for('new_task') }}" method="post">
       {{ form.csrf_token }}
       <p>
-        {{ form.name.label }}: {{ form.name(placeholder="name") }}
+        {{ form.name(placeholder="name") }}
         <span class="error">
           {% if form.name.errors %}
             {% for error in form.name.errors %}
@@ -17,7 +18,7 @@
         </span>
       </p>
       <p>
-        {{ form.due_date.label }}: {{ form.due_date(placeholder="due date") }}
+        {{ form.due_date(placeholder="due date") }}
         <span class="error">
           {% if form.due_date.errors %}
             {% for error in form.due_date.errors %}
@@ -26,7 +27,8 @@
           {% endif %}
         </span>
       </p>
-        {{ form.priority.label }}: {{ form.priority }}
+        {{ form.priority.label }}
+        {{ form.priority }}
         <span class="error">
           {% if form.priority.errors %}
             {% for error in form.priority.errors %}
