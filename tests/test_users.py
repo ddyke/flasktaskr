@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from project import app, db
+from project import app, db, bcrypt
 from project._config import basedir
 from project.models import User
 
@@ -21,6 +21,7 @@ class AllTests(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
+        app.config['DEBUG'] = False
         # change the test database from flasktaskr.db to test.db
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, TEST_DB)
         # http://flask.pocoo.org/docs/0.11/api/#flask.Flask.testing
@@ -28,6 +29,7 @@ class AllTests(unittest.TestCase):
         self.app = app.test_client()
             # create a test database initialised with the setting in the parent database db
         db.create_all()
+        self.assertEquals(app.debug, False)
 
     # executed after each test
     def tearDown(self):
@@ -58,7 +60,11 @@ class AllTests(unittest.TestCase):
         return self.app.get('/logout/', follow_redirects=True)
 
     def create_user(self, name, email, password):
-        new_user = User(name=name, email=email, password=password)
+        new_user = User(
+            name=name,
+            email=email,
+            password=bcrypt.generate_password_hash(password)
+        )
         db.session.add(new_user)
         db.session.commit()
 
