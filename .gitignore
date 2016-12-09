@@ -1,0 +1,12 @@
+venv
+*.pyc
+DS_Store
+cover
+.coverage
+archive
+.coverage
+htmlcov
+_unused
+__pycache__
+note.txt
+

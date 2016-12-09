@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- tag for Microsoft browsers support up to Edge -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- default tag for responsibe browsing esp. in mobile browsers -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- description of the page (content="blah blah") -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Welcome to FlaskTaskr!!</title>
+    <!-- styles -->
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigtion">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">FlaskTaskr</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% if not session.logged_in %}
+              <li><a href="/register">Signup</a></li>
+            {% else %}
+              <li><a href="/logout">Signout</a></li>
+            {% endif %}
+          </ul>
+          {% if session.logged_in %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Welcome, {{username}}.</a></li>
+          </ul>
+          {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+      <div class="content">
+        {% for message in get_flashed_messages() %}
+          <!-- display 'flashed' message in the application -->
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        {% if error %}
+          <div class="error"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+        <!-- take child template here -->
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="footer"></div>
+        <hr>
+        <p>&copy; <a href="https://www.realpython.com">Real Python</a></p>
+      </div>
+    </div><!-- /.container -->
+
+    <!-- scripts -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

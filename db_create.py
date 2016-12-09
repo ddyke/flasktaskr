@@ -24,8 +24,8 @@ with sqlite3.connect(DATABASE_PATH) as conn:
     c.execute("INSERT INTO tasks (name, due_date, priority, status)" \
               "VALUES('Finish Real Python Course 2', '25/11/2016', 10, 1)")
 """
-from views import db
-from models import Task
+from project import db
+from project.models import Task, User
 from datetime import date
 
 # Create all tables stored in this metadata
@@ -33,9 +33,12 @@ from datetime import date
 db.create_all()
 
 # insert data
+
+# User defines the format of the table 'users'
+db.session.add(User('admin', 'admin@min.com', 'admin', 'admin'))
 # Task defines the format of the table 'tasks'
-# db.session.add(Task('Finish this tutorial', date(2016, 11, 30), 10, 1))
-# db.session.add(Task('Finish Real Python', date(2016, 12, 1), 10, 1))
+db.session.add(Task('Finish this tutorial', date(2016, 11, 30), 10, date(2016, 12, 8), 1, 1))
+db.session.add(Task('Finish Real Python', date(2016, 12, 1), 10, date(2016, 12, 8), 1, 1))
 
 # commit the changes
 db.session.commit()
