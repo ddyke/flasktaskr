@@ -27,7 +27,7 @@ class AllTests(unittest.TestCase):
         # http://flask.pocoo.org/docs/0.11/api/#flask.Flask.testing
         # test_client(use_cookies=True, **kwargs) Creates a test client for Flask application.
         self.app = app.test_client()
-            # create a test database initialised with the setting in the parent database db
+        # create a test database initialised with the setting in the parent database db
         db.create_all()
         self.assertEquals(app.debug, False)
 
