@@ -1,0 +1,15 @@
+# specify language
+language:
+  - python
+
+# specify python versions
+python:
+  - "3.5.1"
+
+# install dependencies
+install:
+  - pip3 install -r requirements.txt
+  
+# run tests
+script:
+  - nosetests
