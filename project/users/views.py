@@ -30,7 +30,7 @@ def logout():
     flash('Goodbye!')
     return redirect(url_for('users.login'))     # http://flask.pocoo.org/docs/0.10/api/#flask.redirect
                                                 # flask.redirect(location, code=302, Response=None)
-"""
+
 @users_blueprint.route('/', methods=['GET', 'POST'])
 def login():
     error = None
@@ -53,7 +53,7 @@ def login():
     return render_template('login.html', form=form, error=error)
     # http://flask.pocoo.org/docs/0.10/api/#template-rendering
     # flask.render_template(template_name_or_list, **context)
-"""
+
 @users_blueprint.route('/register/', methods = ['GET', 'POST'])
 def register():
     error = None
