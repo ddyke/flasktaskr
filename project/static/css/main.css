@@ -25,6 +25,14 @@ h2 {
   font-size: 1.5em;
 }
 
+.alert {
+  font-size: 1em;
+}
+
+.task-title{
+  font-family: 'Gruppo', cursive;
+}
+
 .page {
   margin: 2em auto;
   width: 50em;

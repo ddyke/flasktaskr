@@ -118,6 +118,7 @@ class AllTests(unittest.TestCase):
     def test_user_registration(self):
         self.app.get('/register/', follow_redirects=True)
         response = self.register('Michael', 'michael@realpython.com', 'python', 'python')
+        print(response.data)
         self.assertIn(b'Thanks for registering. Please login', response.data)
 
     def test_user_registration_error(self):
@@ -162,6 +163,10 @@ class AllTests(unittest.TestCase):
         self.login('testuser1', '111111')
         response = self.app.get('tasks/', follow_redirects=True)
         self.assertIn(b'testuser1', response.data)
+
+    def test_user_redirected_to_login_after_successful_registration(self):
+        response = self.register('testuser1', 'test1@gmail.com', '111111', '111111')
+        self.assertIn(b'Please login to access your task list.', response.data)
 
     #def test_duplicate_user_registeration_throws_error(self):
     #    self.register('takutaku', 'taku@takkun.com', 'ohmondieu', 'ohmondieu')
