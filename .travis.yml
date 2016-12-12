@@ -1,15 +1,15 @@
-# specify language
 language:
-  - python
-
-# specify python versions
+- python
 python:
-  - "3.5.1"
-
-# install dependencies
+- 3.5.1
 install:
-  - pip3 install -r requirements.txt
-  
-# run tests
+- pip3 install -r requirements.txt
 script:
-  - nosetests
+- nosetests
+deploy:
+  provider: heroku
+  api_key:
+    secure: lmWulKQetM1DE1qpHGTja/iIJOzu1IlArdfdLb/IuRZjpTBVvd6BqepF2vcnzyJABm5PHcSCM9jya/SstUCIgN8yt0bML7SymE9zT0CAkLfmfr9r63udtrqTW/mOG1KIbxhPExCPdmG52RSjVj3pojqA1Hxz8wzy5rvyaMHuGmM9B4mr1EB6ovCCMDFcxtbJhELuLlFqSmIOmk1o8/hgDqti1+/TO1WNIsRiOJxJ5B+65kUmyrtRIpux1aWj6BbDsL6+Ez5Vvp3y4YqFbNEX/EX41LKIa8E3nWp97v1uySesI+k7bdmxVyCWpbnQw5XIz5HzvsWxiJgTcTM/EqzZGfePjWapUesX+C8hGW/IKBR9/yCrkJ1/ZvqiPtmAE6l63sntNYRr1BHKx8xVzZcVM7oPo6x5lN4uRK3kqLmsTofeUvB0DS+Le5Mf42V5wnc0j6WraJaXt7vxuaHxUpEB/v7Gpt6zRtOXEmvMzM++VTpYeFxjpJoog/TLnANE0c7wWvwJwAH/i8PjU/dTtT1AyK9qkpEVDsoYgFT44un80PTywv3/dMRIEZNGfKFPHXnK/v1zJ/tozGBpsem1y6BFhxoUxNxrQeB0fAqo/oiqI5c8MWvqPt0wv42qgFGiGKcd5OBZZ2+TelDYfY7V7A5YhophK9dCCZ+FuKG8LNhDdgk=
+  app: powerful-shore-65218
+  on:
+    repo: ddyke/flasktaskr
