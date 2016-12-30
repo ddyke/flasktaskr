@@ -68,7 +68,7 @@ def task(task_id):
         }
         code = 200
     else:
-        result = {"error": 'Element does not exist'}
+        result = {"error": 'Element does not exist!'}
         code = 404
     # http://flask.pocoo.org/docs/0.11/api/#flask.make_response
     return make_response(jsonify(items=result), code)
