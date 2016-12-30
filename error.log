@@ -50,3 +50,16 @@
 404 error at 12-12-2016 18:11:35: http://localhost/
 404 error at 12-12-2016 18:45:43: http://localhost/this-route-does-not-exist/
 404 error at 12-12-2016 18:50:33: http://localhost/this-route-does-not-exist/
+404 error at 30-12-2016 17:52:31: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:52:38: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:08: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:15: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:24: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:33: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:33: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:54:34: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:55:16: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:55:22: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 17:55:26: http://0.0.0.0:5000/favicon.ico
+404 error at 30-12-2016 18:02:15: http://localhost/this-route-does-not-exist/
+404 error at 30-12-2016 18:02:46: http://localhost/this-route-does-not-exist/
