@@ -9,4 +9,6 @@ htmlcov
 _unused
 __pycache__
 note.txt
+.idea
+
 
